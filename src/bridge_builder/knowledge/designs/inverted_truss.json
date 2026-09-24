@@ -1,0 +1,28 @@
+{
+  "title": "Inverted truss",
+  "summary": "The same triangulation hung below the road: the bottom chord at y=1 works in tension.",
+  "benchmark": {"cost": 2100, "result": "win", "peak_load": 0.42},
+  "beams": [
+    [-6, 3, -4, 3, "steel"],
+    [-4, 3, -2, 3, "steel"],
+    [-2, 3, 0, 3, "steel"],
+    [0, 3, 2, 3, "steel"],
+    [2, 3, 4, 3, "steel"],
+    [4, 3, 6, 3, "steel"],
+    [-4, 3, -4, 1, "steel"],
+    [-2, 3, -2, 1, "steel"],
+    [0, 3, 0, 1, "steel"],
+    [2, 3, 2, 1, "steel"],
+    [4, 3, 4, 1, "steel"],
+    [-4, 1, -2, 1, "steel"],
+    [-2, 1, 0, 1, "steel"],
+    [0, 1, 2, 1, "steel"],
+    [2, 1, 4, 1, "steel"],
+    [-6, 3, -4, 1, "steel"],
+    [6, 3, 4, 1, "steel"],
+    [-4, 3, -2, 1, "steel"],
+    [-2, 3, 0, 1, "steel"],
+    [0, 1, 2, 3, "steel"],
+    [2, 1, 4, 3, "steel"]
+  ]
+}

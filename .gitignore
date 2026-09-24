@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.claude/settings.local.json
+
+# workshop presenter material (slides, notes, plan), kept out of the repo
+for_workshop/
+
+# developer resume notes, machine-specific; kept out of the repo
+DEVELOPMENT.md

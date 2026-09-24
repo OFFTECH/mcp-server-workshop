@@ -1,0 +1,28 @@
+{
+  "title": "Overhead truss",
+  "summary": "A deck and a top chord at y=5 joined by posts and diagonals into triangles, with end diagonals down to the anchors.",
+  "benchmark": {"cost": 2100, "result": "win", "peak_load": 0.75},
+  "beams": [
+    [-6, 3, -4, 3, "steel"],
+    [-4, 3, -2, 3, "steel"],
+    [-2, 3, 0, 3, "steel"],
+    [0, 3, 2, 3, "steel"],
+    [2, 3, 4, 3, "steel"],
+    [4, 3, 6, 3, "steel"],
+    [-4, 3, -4, 5, "steel"],
+    [-2, 3, -2, 5, "steel"],
+    [0, 3, 0, 5, "steel"],
+    [2, 3, 2, 5, "steel"],
+    [4, 3, 4, 5, "steel"],
+    [-4, 5, -2, 5, "steel"],
+    [-2, 5, 0, 5, "steel"],
+    [0, 5, 2, 5, "steel"],
+    [2, 5, 4, 5, "steel"],
+    [-4, 3, -2, 5, "steel"],
+    [-2, 3, 0, 5, "steel"],
+    [0, 3, 2, 5, "steel"],
+    [2, 3, 4, 5, "steel"],
+    [-6, 3, -4, 5, "steel"],
+    [6, 3, 4, 5, "steel"]
+  ]
+}
