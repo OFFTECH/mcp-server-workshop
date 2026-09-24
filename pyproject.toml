@@ -12,7 +12,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+dev = [
+    "pip>=26.2.1",
+    "pytest>=8.0",
+]
 
 [project.scripts]
 bridge-builder = "bridge_builder.server:main"
