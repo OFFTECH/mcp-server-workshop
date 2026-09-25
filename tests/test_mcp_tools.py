@@ -8,12 +8,9 @@ import pytest
 from bridge_builder.api import GameAPI
 from bridge_builder.game import Game
 from bridge_builder.materials import MATERIAL_ORDER
-from bridge_builder.mcp_tools import (
+from bridge_builder.mcp_server import bind_api, load_stage, mcp
+from bridge_builder.solution.mcp_tools import (
     LIVE_FIELDS,
-    add_joint,
-    bind_api,
-    load_stage,
-    mcp,
     place_girder,
     place_girders,
     start_train,
@@ -21,7 +18,7 @@ from bridge_builder.mcp_tools import (
 )
 from bridge_builder.mcp_designs import build_design  # noqa: E402
 
-load_stage(3)  # everything: tools, design resources and prompt, client briefs
+load_stage(3, "solution", "solution", "solution")  # everything, from the reference answers
 
 
 def _call(fn, *args, **kwargs):
@@ -60,12 +57,6 @@ def test_place_girder_plain_function():
     assert game.status()["girders"] == 1
 
 
-def test_add_joint_empty_space_error():
-    payload, _game = _call(add_joint, 0.0, 8.0)
-    assert payload["ok"] is False
-    assert "no joint" in payload["error"]
-
-
 def test_start_train_spawns_and_unpauses():
     payload, game = _call(start_train)
     assert payload["ok"] is True
@@ -84,7 +75,6 @@ def test_all_tools_are_exposed():
         "place_girders",
         "build_design",
         "destroy_at",
-        "add_joint",
         "start_train",
         "pause",
         "reset",
@@ -113,7 +103,7 @@ def test_place_girders_schema_is_a_list_of_beams():
 
 
 def test_place_girders_tool_builds_in_one_call():
-    from bridge_builder.mcp_tools import Beam
+    from bridge_builder.solution.mcp_tools import Beam
 
     beams = [Beam(x1=-6, y1=3, x2=-4, y2=3), Beam(x1=-4, y1=3, x2=-2, y2=3, material="wood")]
     payload, game = _call(place_girders, beams)

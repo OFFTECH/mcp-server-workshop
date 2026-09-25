@@ -20,6 +20,7 @@ dev = [
 [project.scripts]
 bridge-builder = "bridge_builder.server:main"
 set-api-key = "bridge_builder.setkey:main"
+workshop = "bridge_builder.workshop:main"
 
 [build-system]
 requires = ["hatchling"]

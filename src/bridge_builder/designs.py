@@ -5,7 +5,7 @@ Each design is a pair of files named after it:
 * ``<name>.md``   the card: how it carries load, key geometry, when to choose it
 * ``<name>.json`` title, summary, measured benchmark, and the beams in build order
 
-This module only reads and renders them; ``mcp_tools`` publishes them as
+This module only reads and renders them; ``mcp_designs`` publishes them as
 resources. The files are re-read on every call, so an edited card shows up
 without restarting the game.
 """

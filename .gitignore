@@ -9,3 +9,8 @@ for_workshop/
 
 # developer resume notes, machine-specific; kept out of the repo
 DEVELOPMENT.md
+
+# backups made by `uv run workshop restore`
+src/bridge_builder/my_tools.*.bak
+src/bridge_builder/my_resources.*.bak
+src/bridge_builder/my_prompts.*.bak

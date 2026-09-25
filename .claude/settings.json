@@ -1,3 +1,13 @@
 {
-  "enabledMcpjsonServers": ["bridge-engineer"]
+  "enabledMcpjsonServers": ["bridge-engineer"],
+  "permissions": {
+    "allow": ["mcp__bridge-engineer"],
+    "deny": [
+      "Read", "Grep", "Glob", "LSP",
+      "Bash", "PowerShell",
+      "Edit", "Write", "NotebookEdit",
+      "WebFetch", "WebSearch",
+      "Agent"
+    ]
+  }
 }

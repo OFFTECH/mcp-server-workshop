@@ -94,3 +94,19 @@ def test_load_colour_runs_green_to_red():
     assert load_color(0.0) == (20, 220, 20)
     assert load_color(1.0) == (255, 0, 20)
     assert load_color(5.0) == load_color(1.0)
+
+
+def test_window_fits_half_a_1920_screen():
+    from bridge_builder.view import WINDOW_SIZE
+
+    assert WINDOW_SIZE[0] + 20 <= 960  # room for the window frame
+    assert abs(WINDOW_SIZE[0] / WINDOW_SIZE[1] - WIDTH / HEIGHT) < 0.01
+
+
+def test_mouse_in_the_scaled_window_hits_the_same_grid_node():
+    from bridge_builder.view import WINDOW_SCALE, window_to_canvas
+
+    sx, sy = world_to_screen(-6, 3)  # the innermost left anchor, in canvas pixels
+    in_window = (round(sx * WINDOW_SCALE), round(sy * WINDOW_SCALE))
+    x, y = screen_to_world(*window_to_canvas(in_window))
+    assert abs(x + 6) < 0.1 and abs(y - 3) < 0.1

@@ -14,8 +14,11 @@ from bridge_builder.grid import GAP_FLOOR_Y, GAP_X, GRID, aim_member, iter_grid_
 from bridge_builder.materials import DEFAULT_MATERIAL, MATERIAL_ORDER, MATERIALS
 from bridge_builder.physics import CHASSIS_SIZE, DT, GIRDER_THICKNESS
 
-WIDTH, HEIGHT = 1280, 720
+WIDTH, HEIGHT = 1280, 720  # the canvas everything is drawn on, in canvas pixels
 PPM = 40.0
+# The window shows the canvas scaled down, so it fits half of a 1920 px wide screen.
+WINDOW_SCALE = 0.72
+WINDOW_SIZE = (round(WIDTH * WINDOW_SCALE), round(HEIGHT * WINDOW_SCALE))
 VIEW_LEFT, VIEW_BOTTOM = -16.0, -2.0
 SKY_TOP = (226, 228, 232)  # soft grey gradient, no pure white
 SKY_BOTTOM = (178, 182, 190)
@@ -70,6 +73,11 @@ def screen_to_world(sx: int, sy: int) -> tuple[float, float]:
     return x, y
 
 
+def window_to_canvas(pos: tuple[int, int]) -> tuple[int, int]:
+    """A mouse position in the (scaled) window, in canvas pixels."""
+    return round(pos[0] / WINDOW_SCALE), round(pos[1] / WINDOW_SCALE)
+
+
 def _kind(body) -> str:
     data = body.userData or {}
     return str(data.get("kind", ""))
@@ -100,7 +108,8 @@ def run(
 ) -> None:
     pygame.init()
     pygame.display.set_caption("Bridge Builder")
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    window = pygame.display.set_mode(WINDOW_SIZE)
+    screen = pygame.Surface((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 28)
     tool = "girder"
@@ -135,7 +144,7 @@ def run(
                     mouse_joint = None
                     game.reset()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                wx, wy = snap_mouse(*screen_to_world(*event.pos))
+                wx, wy = snap_mouse(*screen_to_world(*window_to_canvas(event.pos)))
                 if event.button == 3:
                     drag_start = None
                     _clear_mouse_joint(game, mouse_joint)
@@ -147,12 +156,12 @@ def run(
                     elif tool == "joint":
                         game.add_joint(wx, wy)
                     elif tool == "destroy":
-                        game.destroy_at(*screen_to_world(*event.pos), snap=False)
+                        game.destroy_at(*screen_to_world(*window_to_canvas(event.pos)), snap=False)
                     elif tool == "grab":
                         mouse_joint = _grab(game, wx, wy)
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1 and tool == "girder" and drag_start is not None:
-                    mx, my = screen_to_world(*event.pos)
+                    mx, my = screen_to_world(*window_to_canvas(event.pos))
                     member = aim_member(drag_start[0], drag_start[1], mx, my)
                     if member is not None:
                         game.place_girder(*member, material=material)
@@ -162,9 +171,9 @@ def run(
                     mouse_joint = None
             elif event.type == pygame.MOUSEMOTION:
                 if tool == "destroy" and event.buttons[0]:
-                    game.destroy_at(*screen_to_world(*event.pos), snap=False)
+                    game.destroy_at(*screen_to_world(*window_to_canvas(event.pos)), snap=False)
                 if mouse_joint is not None:
-                    wx, wy = screen_to_world(*event.pos)
+                    wx, wy = screen_to_world(*window_to_canvas(event.pos))
                     if isinstance(mouse_joint, tuple):
                         game.world.drag_node(mouse_joint[1], (wx, wy))
                     else:
@@ -178,7 +187,7 @@ def run(
         _draw_grid(screen)
         _draw_world(screen, game)
         _draw_nodes(screen, game)
-        mx, my = screen_to_world(*pygame.mouse.get_pos())
+        mx, my = screen_to_world(*window_to_canvas(pygame.mouse.get_pos()))
         if tool == "destroy":
             _draw_delete_cursor(screen, game, mx, my)
         else:
@@ -198,6 +207,7 @@ def run(
             else:
                 pygame.draw.circle(screen, RUBBER_BAD, world_to_screen(*drag_start), 8, 2)
         _draw_hud(screen, font, game, tool, material, mcp_ok)
+        pygame.transform.smoothscale(screen, WINDOW_SIZE, window)
         pygame.display.flip()
         clock.tick(int(1.0 / DT))
         frames += 1
